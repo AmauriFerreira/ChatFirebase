@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/bgcolor"
+    android:orientation="vertical">
+    tools:context=".SalaActivity">
+
+
+    <Button
+        android:id="@+id/edit_enter1"
+        android:text="Cinema"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@drawable/bg_button_rounded"
+        android:gravity="center"
+        android:elevation="4dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp" />
+
+    <Button
+        android:id="@+id/edit_enter2"
+        android:text="Novidades"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@drawable/bg_button_rounded"
+        android:gravity="center"
+        android:elevation="4dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp" />
+
+
+    <Button
+        android:id="@+id/edit_enter3"
+        android:text="Tecnologia "
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@drawable/bg_button_rounded"
+        android:gravity="center"
+        android:elevation="4dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp" />
+
+    <Button
+        android:id="@+id/edit_enter4"
+        android:text="Economia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@drawable/bg_button_rounded"
+        android:gravity="center"
+        android:elevation="4dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp" />
+
+
+
+</LinearLayout>

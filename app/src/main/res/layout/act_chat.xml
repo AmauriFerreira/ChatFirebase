@@ -19,7 +19,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:paddingLeft="10dp"
-        android:text="@string/message"
+        android:hint="@string/message"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/butn_chat"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,6 +4,7 @@ public class Notification  extends Message {
 
     private  String fromNome;
 
+
     public String getFromNome() {
         return  fromNome;
     }

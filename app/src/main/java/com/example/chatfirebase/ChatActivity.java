@@ -39,6 +39,8 @@ public class ChatActivity extends AppCompatActivity {
     private User user;
     private User me;
     private EditText editChat;
+    private Salas salas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,11 +216,10 @@ public class ChatActivity extends AppCompatActivity {
             ImageView imgMessage = viewHolder.itemView.findViewById(R.id.imag_message_user);
 
             txtMsg.setText(message.getText());
-
             Picasso.get()
                     .load(user.getProfileUrl())
                     .into(imgMessage);
-            if (message.getFromId().equals(FirebaseAuth.getInstance().getUid())){
+            if (message.getToId().equals(FirebaseAuth.getInstance().getUid())){
                 Picasso.get()
                         .load(user.getProfileUrl())
                         .into(imgMessage);

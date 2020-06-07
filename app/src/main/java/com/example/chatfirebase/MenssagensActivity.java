@@ -106,8 +106,9 @@ public class MenssagensActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
             getMenuInflater().inflate(R.menu.menu,menu);
-            return true;
+        return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -124,7 +125,11 @@ public class MenssagensActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
     }
-
+    public void SalaActivity( ) {
+        Intent intent = new Intent(MenssagensActivity.this, SalaActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
     private class ContactItem extends Item<ViewHolder> {
 
 
