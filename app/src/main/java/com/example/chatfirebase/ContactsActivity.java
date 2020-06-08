@@ -50,6 +50,7 @@ public class ContactsActivity extends AppCompatActivity {
 
                UserItem userItem = (UserItem) item;
                intent.putExtra("user", userItem.user);
+                intent.putExtra("sala","");
 
 
                startActivity(intent);

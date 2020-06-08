@@ -11,12 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.xwray.groupie.GroupAdapter;
 
 public class SalaActivity extends AppCompatActivity {
 
 
     private GroupAdapter adapter;
+    private Salas sala;
+    private User me;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,21 +36,29 @@ public class SalaActivity extends AppCompatActivity {
 
 
 
+
+
+        Salas();/** Cria as salas **/
         edit_enter1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent edit_enter1 = new Intent(SalaActivity.this, ChatActivity.class);
 
-
+                edit_enter1.putExtra("sala","Cinema");
                 startActivity(edit_enter1);
             }
 
+
+
         });
+
 
         edit_enter2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent edit_enter2 = new Intent(SalaActivity.this, Contact.class);
+                Intent edit_enter2 = new Intent(SalaActivity.this, ChatActivity.class);
+
+                edit_enter2.putExtra("sala","Novidades");
                 startActivity(edit_enter2);
             }
 
@@ -56,7 +67,9 @@ public class SalaActivity extends AppCompatActivity {
         edit_enter3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent edit_enter3 = new Intent(SalaActivity.this, Contact.class);
+                Intent edit_enter3 = new Intent(SalaActivity.this, ChatActivity.class);
+
+                edit_enter3.putExtra("sala","Tecnologia");
                 startActivity(edit_enter3);
             }
 
@@ -66,7 +79,9 @@ public class SalaActivity extends AppCompatActivity {
         edit_enter4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent edit_enter4 = new Intent(SalaActivity.this, Contact.class);
+                Intent edit_enter4 = new Intent(SalaActivity.this, ChatActivity.class);
+
+                edit_enter4.putExtra("sala","Economia");
                 startActivity(edit_enter4);
             }
 
@@ -86,6 +101,35 @@ public class SalaActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+
+
+
+
+    private void Salas() {
+        Salas sala;
+        String uid;
+
+        uid = FirebaseAuth.getInstance().getUid();
+        sala = new Salas(uid,"cinema");
+        FirebaseFirestore.getInstance().collection("Salas").document("Cinema").set(sala);
+
+        uid = FirebaseAuth.getInstance().getUid();
+        sala = new Salas(uid,"novidades");
+        FirebaseFirestore.getInstance().collection("Salas").document("Novidades").set(sala);
+
+        uid = FirebaseAuth.getInstance().getUid();
+        sala = new Salas(uid,"tecnologia");
+        FirebaseFirestore.getInstance().collection("Salas").document("Tecnologia").set(sala);
+
+        uid = FirebaseAuth.getInstance().getUid();
+        sala = new Salas(uid,"economia");
+        FirebaseFirestore.getInstance().collection("Salas").document("Economia").set(sala);
+    }
+
+
+
+    /**/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,6 +151,8 @@ public class SalaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
     }
+
+
 
 
 }

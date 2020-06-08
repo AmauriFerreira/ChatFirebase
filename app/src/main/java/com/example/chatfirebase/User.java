@@ -83,5 +83,6 @@ public  User(){
         dest.writeString(profileUrl);
         dest.writeString(token);
         dest.writeInt(online ? 1 : 0);
+
     }
 }

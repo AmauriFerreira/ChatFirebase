@@ -3,7 +3,7 @@ package com.example.chatfirebase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Salas  {
+public class MessageSala extends Message {
 
 
     private String nomesala;
@@ -11,16 +11,16 @@ public class Salas  {
     private String uuid;
 
 
-    public Salas(){
+    public MessageSala(){
     }
 
-    public Salas(String uuid , String nomesala) {
+    public MessageSala(String uuid , String nomesala) {
         this.uuid = uuid;
         this.nomesala = nomesala;
         setToken(uuid);
     }
 
-    public Salas(Parcel in) {
+    public MessageSala(Parcel in) {
         uuid = in.readString();
         nomesala = in.readString();
         token = in.readString();

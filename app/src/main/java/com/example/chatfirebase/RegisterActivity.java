@@ -152,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
 
-                                                Intent intent= new Intent(RegisterActivity.this, MenssagensActivity.class);
+                                                Intent intent= new Intent(RegisterActivity.this, SalaActivity.class);
 
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 

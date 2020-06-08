@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +40,8 @@ public class ChatActivity extends AppCompatActivity {
     private User user;
     private User me;
     private EditText editChat;
-    private Salas salas;
+    private String sala;
+
 
 
     @Override
@@ -48,7 +50,15 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.act_chat);
 
         user = getIntent().getExtras().getParcelable("user");
-        getSupportActionBar().setTitle(user.getUsernome());
+        sala = getIntent().getExtras().getString("sala");
+
+        if (sala.isEmpty()){
+            getSupportActionBar().setTitle(user.getUsernome());
+        }else{
+            getSupportActionBar().setTitle(sala);
+        }
+
+
 
         RecyclerView rv = findViewById(R.id.recycler_chat);
         editChat = findViewById(R.id.edit_chat);
@@ -79,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void fetchMessages() {
-        if (me != null) {
+        if (me != null && sala.isEmpty()) {
 
             String fromId = user.getUuid();
             String toId = me.getUuid();
@@ -87,6 +97,31 @@ public class ChatActivity extends AppCompatActivity {
             FirebaseFirestore.getInstance().collection("/conversations")
                     .document(fromId)
                     .collection(toId)
+                    .orderBy("timestamp", Query.Direction.ASCENDING)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            List<DocumentChange> documentChanges = queryDocumentSnapshots.getDocumentChanges();
+
+                            if (documentChanges != null) {
+                                for (DocumentChange doc : documentChanges) {
+                                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                                        Message message = doc.getDocument().toObject(Message.class);
+                                        adapter.add(new MessageItem(message));
+                                    }
+                                }
+                            }
+                        }
+                    });
+        }
+
+        if (me != null && !sala.isEmpty()) {
+
+            String toId = me.getUuid();
+
+            FirebaseFirestore.getInstance().collection("/Salas")
+                    .document(sala)
+                    .collection("conversations")
                     .orderBy("timestamp", Query.Direction.ASCENDING)
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
@@ -113,16 +148,19 @@ public class ChatActivity extends AppCompatActivity {
         editChat.setText(null);
 
         String fromId = FirebaseAuth.getInstance().getUid();
-        String toId = user.getUuid();
+
         long timestamp = System.currentTimeMillis();
 
-        Message message = new Message();
+        MessageSala message = new MessageSala();
         message.setFromId(fromId);
-        message.setToId(toId);
         message.setTimestamp(timestamp);
         message.setText(text);
 
-        if (!message.getText().isEmpty()) {
+
+        if (!message.getText().isEmpty() && sala.isEmpty()) {
+            String toId = user.getUuid();
+            message.setToId(toId);
+
             FirebaseFirestore.getInstance().collection("conversations")
                     .document(fromId)
                     .collection(toId)
@@ -200,12 +238,34 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     });
         }
+        if (!message.getText().isEmpty() && !sala.isEmpty()){
+            FirebaseFirestore.getInstance().collection("/Salas").document(sala).collection("conversations")
+                    .add(message)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d("SendMessageSala", documentReference.getId());
+
+
+                        }
+
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("SendMessageSala", e.getMessage(), e);
+                        }
+                    });
+
+        }
+
     }
 
     private class MessageItem extends Item<ViewHolder> {
 
         private final Message message;
-
+        private User fromId;
+        private String sFromId;
         private MessageItem(Message message) {
             this.message = message;
         }
@@ -216,9 +276,11 @@ public class ChatActivity extends AppCompatActivity {
             ImageView imgMessage = viewHolder.itemView.findViewById(R.id.imag_message_user);
 
             txtMsg.setText(message.getText());
-            Picasso.get()
-                    .load(user.getProfileUrl())
-                    .into(imgMessage);
+            if(sala.isEmpty()){
+                Picasso.get()
+                        .load(user.getProfileUrl())
+                        .into(imgMessage);
+
             if (message.getToId().equals(FirebaseAuth.getInstance().getUid())){
                 Picasso.get()
                         .load(user.getProfileUrl())
@@ -227,7 +289,26 @@ public class ChatActivity extends AppCompatActivity {
                 Picasso.get()
                         .load(me.getProfileUrl())
                         .into(imgMessage);
-            };
+            };}
+            if(!sala.isEmpty()){
+
+
+                FirebaseFirestore.getInstance().collection("/users")
+                        .document(message.getFromId())
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                fromId = documentSnapshot.toObject(User.class);
+                                Toast toast = Toast.makeText(getApplicationContext(), fromId.getUuid(), Toast.LENGTH_LONG);
+
+                                Picasso.get()
+                                        .load(fromId.getProfileUrl())
+                                        .into(imgMessage);
+                                }
+                        });
+
+            }
 
 
         }
