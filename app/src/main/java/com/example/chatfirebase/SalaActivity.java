@@ -146,6 +146,8 @@ public class SalaActivity extends AppCompatActivity {
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 verifyAuthentication();
+                Intent  intent1= new Intent(SalaActivity.this, MainActivity.class);
+                startActivity(intent1);
                 break;
         }
         return super.onOptionsItemSelected(item);
